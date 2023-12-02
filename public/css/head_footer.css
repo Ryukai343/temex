@@ -1,0 +1,38 @@
+nav.navbar{
+    width: 100vw;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+img.logo {
+    height: 5vh;
+    min-height: 40px;
+    margin-right: 0.8vw;
+}
+
+h1.logo {
+    text-align: center;
+    color: whitesmoke;
+    margin-bottom: 0; !important;
+    align-content: center;
+    font-size: xxx-large;
+}
+a.logo {
+    margin-right: 3vw !important;
+    margin-bottom: 0 !important;
+}
+a.btn-dark:hover {
+    background-color: rgb( 33,37,41);
+    color: #0d6efd;
+}
+
+li.cart:hover {
+    color: rgb(33,37,41);
+}
+a.footer{
+    color: rgba(255, 255, 255, 0.55);
+}
+
+a.footer:hover{
+    color: rgba(255, 255, 255, 0.75);
+}
+
+

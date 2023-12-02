@@ -15,8 +15,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+Route::get('/cennik', function () {
+    return view('cennik');
+});
+
+Route::get('/kontakt', function () {
+    return view('kontakt');
+});
+
+Route::get('/objednavka', function () {
+    return view('objednavka');
+});
+
+Route::get('/onas', function () {
+    return view('onas');
+});
+
+Route::get('/items', [\App\Http\Controllers\ItemController::class, 'index'])->name('items.index');
+Route::get('/createItem', [\App\Http\Controllers\ItemController::class, 'create'])->name('items.create');
+Route::post('/createItem', [\App\Http\Controllers\ItemController::class, 'store'])->name('items.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

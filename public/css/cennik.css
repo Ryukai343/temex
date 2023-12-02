@@ -1,0 +1,15 @@
+i.fa-brush {
+    rotate: 60deg;
+}
+
+img.article_picture {
+    width: 20vw;
+    height: 20vh;
+    align-content: center;
+    min-height: 100px;
+    min-width: 200px;
+}
+img.sander_icon {
+    height: 45px;
+    margin-right: 5px;
+}
