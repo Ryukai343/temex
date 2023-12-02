@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
 use function Illuminate\Support\Facades\Http;
 
@@ -22,23 +23,16 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:4',
+        $validatedData = $request->validate([
+            'name' => 'required|string',
             'description' => 'required|string',
-            'picture' => 'required|url',
-            'price' => 'required|numeric|min:0',
+            'picture' => 'required|string',
+            'price' => 'required|numeric',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()
-                ->route('items.create')
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         // Store the data in your table
-        $item = Item::create($validator);
-        return dd($item);
+        $item = Item::create($validatedData);
+        return ItemController::index();
     }
 
     public function create()
