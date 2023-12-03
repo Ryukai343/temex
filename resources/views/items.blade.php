@@ -4,18 +4,25 @@
                     <div class="album py-3">
                         <div class="container py-4">
                             <a href="{{ url('/createItem') }}" class="btn btn-sm btn-outline-secondary">Pridať položku</a>
+                            <hr>
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                                 @foreach($items as $item)
                                 <div class="col">
                                     <div class="card shadow-sm">
-                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>{{ $item->name }}</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ $item->name }}</text></svg>
+                                        <img src="item_Images/{{ $item->picture }}"  class="bd-placeholder-img card-img-top item_picture" alt="{{ $item->picture }}">
                                         <div class="card-body">
                                             <h3 class="card-text">{{ $item->name }}</h3>
                                             <p class="card-text">{{ $item->description }}</p>
+                                            <p class="card-text">{{ $item->picture }}</p>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Zmazať</button>
-                                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                                    <form method="POST" action="{{ route('items.destroy', $item->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                    <a href="{{ route('items.edit', $item) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-cart-shopping"></i></button>
                                                 </div>
                                                 <small class="text-body-secondary">{{ $item->price }}€</small>
                                             </div>

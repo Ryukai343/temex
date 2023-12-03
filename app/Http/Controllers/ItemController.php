@@ -24,15 +24,26 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|unique:'.Item::class,
             'description' => 'required|string',
-            'picture' => 'required|string',
+            'picture' => 'required|image|max:5120',
             'price' => 'required|numeric',
         ]);
+        $item = new Item();
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->price = $request->price;
+
+        // Save image to storage
+        $item->picture = $item->name.'_'.time().'.'.$request->picture->extension();
+        $request->picture->move(public_path('item_Images'), $item->picture);
+
+        $item->save();
 
         // Store the data in your table
-        $item = Item::create($validatedData);
-        return ItemController::index();
+        //$item = Item::create($validatedData);
+
+        return redirect()->route( 'items.index');
     }
 
     public function create()
@@ -50,16 +61,44 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Item $item)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'picture' => 'nullable|image|max:5120',
+            'price' => 'required|numeric',
+        ]);
+        $data = $request->all();
+        if ($request->hasFile('picture')) {
+            $picture_name = $request->name.'_'.time().'.'.$request->picture->extension();
+            $data['picture'] = $picture_name;
+            $request->picture->move(public_path('item_Images'), $picture_name);
+            if(file_exists('item_Images/'.$item->picture)){
+                unlink('item_Images/'.$item->picture);
+            }
+        } else {
+            unset($data['picture']);
+        }
+        $item->update($data);
+        return redirect()->route( 'items.index');
     }
 
+    public function edit(Item $item)
+    {
+        return view('editItem', compact('item'));
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $item = Item::findOrFail($id);
+        if(file_exists('item_Images/'.$item->picture)){
+            unlink('item_Images/'.$item->picture);
+        }
+
+        $item->delete();
+        return redirect()->route('items.index');
     }
 }

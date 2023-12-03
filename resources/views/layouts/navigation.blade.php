@@ -24,16 +24,11 @@
                 @if (Route::has('login'))
                     @auth
                         <li class="nav-item m-2">
-                            <a class="btn btn-outline-light" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();                                                 document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-light" >Odhlásenie</button>
+                            </form>
                         </li>
-
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                            {{ csrf_field() }}
-                        </form>
-
                     @else
                         <li class="nav-item m-2"><a href="{{ route('login') }}" class="btn btn-outline-light ">Prihlásenie</a></li>
                         @if (Route::has('register'))

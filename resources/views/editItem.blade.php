@@ -16,37 +16,36 @@
             <div class="container h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                        <div class="card">
+                        <div class="card" style="border-radius: 15px;">
                             <div class="card-body p-5">
-                                <h2 class="text-uppercase text-center mb-5">Pridanie položky</h2>
-                                <form method="POST" action="{{ route('items.store') }}"  enctype="multipart/form-data">
+                                <h2 class="text-uppercase text-center mb-5">Editácia položky</h2>
+                                <form method="POST" action="{{ route('items.update', $item) }}"  enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-outline mb-4">
                                         <label for="name" class="form-label">Názov</label>
-                                        <input type="text" id="name" name="name" class="form-control form-control-lg" value="{{ old('name') }}" required>
+                                        <input type="text" id="name" name="name" class="form-control form-control-lg" value="{{$item->name}}" required>
                                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label for="description" class="form-label">Popis</label>
-                                        <textarea id="description" class="form-control form-control-lg"  name="description" required>{{ old('description') }}</textarea>
+                                        <textarea id="description" class="form-control form-control-lg"  name="description">{{$item->description}} required</textarea>
                                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label for="picture" class="form-label">Obrázok položky</label>
-                                        <input type="file" class="form-control form-control-lg" id="picture" name="picture" accept="image" required>
-                                        <x-input-error :messages="$errors->get('picture')" class="mt-2" />
+                                        <input type="file" class="form-control form-control-lg" id="picture" name="picture"  accept="image" value="item_Images/{{$item->picture}}">
+                                        <x-input-error :messages="$errors->get('file')" class="mt-2" />
                                     </div>
 
                                     <div class="form-outline mb-4">
                                         <label for="price" class="form-label">Cena</label>
-                                        <input type="text" class="form-control form-control-lg" id="price" onkeypress="return /[0-9]/i.test(event.key)" name="price" pattern="^\d+$" value="{{ old('price') }}" required>
+                                        <input type="text" class="form-control form-control-lg" id="price" pattern="^\d+$" onkeypress="return /[0-9]/i.test(event.key)" name="price" value="{{$item->price}}" required>
                                         <x-input-error :messages="$errors->get('price')" class="mt-2" />
                                     </div>
-
                                     <div class="d-flex justify-content-center">
-                                        <button type="submit" class="btn btn-primary  btn-block btn-lg gradient-custom-4 ">Vytvoriť položku</button>
+                                        <button type="submit" class="btn btn-primary  btn-block btn-lg gradient-custom-4 ">Editovať položku</button>
                                     </div>
                                 </form>
                             </div>
