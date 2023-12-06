@@ -14,8 +14,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
 
+        //$items = Item::all();
+        $items = Item::orderBy('name', 'asc')->get();
         return view('items', compact('items'));
     }
     /**
@@ -25,8 +26,8 @@ class ItemController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|unique:'.Item::class,
-            'description' => 'required|string',
-            'picture' => 'required|image|max:5120',
+            'description' => 'required|string|max:200',
+            'picture' => 'nullable|image|max:5120',
             'price' => 'required|numeric',
         ]);
         $item = new Item();
@@ -35,8 +36,12 @@ class ItemController extends Controller
         $item->price = $request->price;
 
         // Save image to storage
-        $item->picture = $item->name.'_'.time().'.'.$request->picture->extension();
-        $request->picture->move(public_path('item_Images'), $item->picture);
+        if ($request->picture !== null) {
+            $item->picture = $item->name . '_' . time() . '.' . $request->picture->extension();
+            $request->picture->move(public_path('item_Images'), $item->picture);
+        }else{
+            $item->picture = 'Bez obrázku';
+        }
 
         $item->save();
 
@@ -65,7 +70,7 @@ class ItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'required|string|max:200',
             'picture' => 'nullable|image|max:5120',
             'price' => 'required|numeric',
         ]);
