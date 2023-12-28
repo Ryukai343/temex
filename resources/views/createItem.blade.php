@@ -27,7 +27,16 @@
                                         <input type="text" id="name" name="name" class="form-control form-control-lg" value="{{ old('name') }}" required>
                                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                                     </div>
-
+                                    <div class="form-outline mb-4">
+                                        <label for="item_types" class="form-label">Kategória</label>
+                                        <input name="type" list="items_type" value="" class="form-control form-control-lg" required>
+                                        <datalist id="items_type">
+                                            @foreach($types as $type)
+                                                <option value="{{ $type->type }}"></option>
+                                            @endforeach
+                                        </datalist>
+                                        <x-input-error :messages="$errors->get('type')" class="mt-2" />
+                                    </div>
                                     <div class="form-outline mb-4">
                                         <label for="description" class="form-label">Popis</label>
                                         <textarea id="description" class="form-control form-control-lg"  name="description" maxlength="200" required>{{ old('description') }}</textarea>

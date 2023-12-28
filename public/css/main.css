@@ -17,6 +17,7 @@ body {
 }
 article div.container {
     background-color: rgba(236, 236, 236, 0.85);
+    max-width: 90vw;
 }
 
 .carousel-item {
@@ -33,3 +34,35 @@ img.item_picture{
     height: 225px;
     object-fit: cover;
 }
+h1.lead{
+    font-size: 3rem;
+    font-weight: bold;
+    height: 5vh;
+    color: rgba(0, 0, 0, 0.8);
+}
+.empty{
+    height: 30vh;
+}
+
+#sidebar{
+    width: 15%;
+    float: left;
+}
+.category{
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+a.category{
+    color: black;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+}
+.list-group-item{
+    border: none;
+    padding: 0.3rem 0.4rem 0.3rem 0rem;
+}
+
+
+
+

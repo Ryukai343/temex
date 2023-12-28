@@ -85,7 +85,7 @@
 
             <!-- /END THE FEATURETTES -->
             <p class="text-center"><strong>Všetky ceny sú uvedené s DPH.</strong></p>
-            <h2 class="text-center pb-5 mb-0">Pri kompletnom prebrúsení hrobu obnova písma a doprava ZADARMO !!!</h2>
+            <h2 class="text-center pb-5 mb-0">Objednávacia cena je len orientačná! Počas renovácie sa môže zmeniť.</h2>
         </div>
     </article>
 @endsection

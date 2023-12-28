@@ -10,15 +10,17 @@
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item"><a href="{{ url('/') }}" class="nav-link active">Domov</a></li>
+                <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">Domov</a></li>
                 <li class="nav-item"><a href="{{ url('/onas') }}" class="nav-link">O nás</a></li>
                 <li class="nav-item"><a href="{{ url('/items') }}" class="nav-link">Obchod</a></li>
                 <li class="nav-item"><a href="{{ url('/cennik') }}" class="nav-link">Cenník</a></li>
-                <li class="nav-item"><a href="{{ url('/objednavka') }}" class="nav-link">Objednávka</a></li>
                 <li class="nav-item"><a href="{{ url('/kontakt') }}" class="nav-link">Kontakt</a></li>
             </ul>
-            <form role="search">
-                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <form role="search" method="GET" action="{{ route('items.index') }}">
+                <div class="input-group">
+                    <input class="form-control" name="input" id="input" type="search" placeholder="Search">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
             </form>
             <ul class="navbar-nav mr-3  nav-pills nav-fill d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 @if (Route::has('login'))
@@ -36,7 +38,12 @@
                         @endif
                     @endauth
                 @endif
-                    <li class="nav-item m-2 cart"><a href="#" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    @if(count((array) session('cart')) == 0)
+                        <li class="nav-item m-2 cart"><a href="{{ url('/košík') }}" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                    @else
+                        <li class="nav-item m-2 cart"><a href="{{ url('/košík') }}" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i><span class="badge">{{count((array) session('cart'))}}</span></a></li>
+                    @endif
+
             </ul>
         </div>
     </div>

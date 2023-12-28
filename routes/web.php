@@ -34,12 +34,24 @@ Route::get('/onas', function () {
     return view('onas');
 });
 
-Route::get('/items', [\App\Http\Controllers\ItemController::class, 'index'])->name('items.index');
+Route::get('/košík', function () {
+    return view('shop_cart');
+});
+
+Route::get('/items/{type?}', [\App\Http\Controllers\ItemController::class, 'index'])->name('items.index');
 Route::get('/createItem', [\App\Http\Controllers\ItemController::class, 'create'])->name('items.create');
-Route::get('/items/{item}', [\App\Http\Controllers\ItemController::class, 'edit'])->name('items.edit');
+Route::get('/items/edit/{item}', [\App\Http\Controllers\ItemController::class, 'edit'])->name('items.edit');
+Route::get('/items/show/{item}', [\App\Http\Controllers\ItemController::class, 'show'])->name('items.show');
+Route::get('/items/cart/add/{item}', [\App\Http\Controllers\ItemController::class, 'add_to_cart'])->name('items.add_to_cart');
+Route::get('/items/cart/delete/{id}', [\App\Http\Controllers\ItemController::class, 'delete_cart_item'])->name('items.delete_cart_item');
 Route::post('/createItem', [\App\Http\Controllers\ItemController::class, 'store'])->name('items.store');
 Route::post('/items/{item}', [\App\Http\Controllers\ItemController::class, 'update'])->name('items.update');
 Route::delete('/items/{id}', [\App\Http\Controllers\ItemController::class, 'destroy'])->name('items.destroy');
+
+Route::get('/createItemType', function () {
+    return view('createItemType');
+});
+Route::post('/createItemType', [\App\Http\Controllers\ItemTypeController::class, 'store'])->name('itemType.store');
 
 Route::post('/order', [\App\Http\Controllers\OrderController::class, 'store'])->name('order.store');
 

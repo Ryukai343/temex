@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\ItemsType;
 use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
 use function Illuminate\Support\Facades\Http;
@@ -12,12 +13,22 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, ItemsType $type)
     {
-
+        if ($type->id == null) {
+            $items = Item::orderBy('name')->get();
+        } else {
+            $items = Item::where('item_type_id', $type->id)->orderBy('name')->get();
+        }
+        if ($request->input != null) {
+            $input = '%' . $request->input('input') . '%';
+            $items = Item::where('name', 'like', $input)->orderBy('name')->get();
+        }
+        //return dd($items);
         //$items = Item::all();
-        $items = Item::orderBy('name', 'asc')->get();
-        return view('items', compact('items'));
+        $types = ItemsType::orderBy('type')->get();
+        return view('items', compact('items'), compact('types'));
+
     }
     /**
      * Store a newly created resource in storage.
@@ -26,6 +37,7 @@ class ItemController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|unique:'.Item::class,
+            'type'=> 'required|exists:'.ItemsType::class.',type',
             'description' => 'required|string|max:200',
             'picture' => 'nullable|image|max:5120',
             'price' => 'required|numeric',
@@ -34,6 +46,7 @@ class ItemController extends Controller
         $item->name = $request->name;
         $item->description = $request->description;
         $item->price = $request->price;
+        $item->item_type_id = ItemsType::where('type', $request->type)->value('id');
 
         // Save image to storage
         if ($request->picture !== null) {
@@ -53,14 +66,16 @@ class ItemController extends Controller
 
     public function create()
     {
-        return view('createItem');
+        $types = ItemsType::orderBy('type', 'asc')->get();
+        return view('createItem', compact('types'));
     }
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Item $item)
     {
         //
+        return view('item_detail', compact('item'));
     }
 
     /**
@@ -105,5 +120,32 @@ class ItemController extends Controller
 
         $item->delete();
         return redirect()->route('items.index');
+    }
+
+    public function add_to_cart(Item $item)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$item->id])){
+            $cart[$item->id]['quantity']++;
+        } else {
+            $cart[$item->id] = [
+                'name' => $item->name,
+                'price' => $item->price,
+                'picture' => $item->picture,
+                'quantity' => 1,
+            ];
+        }
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', 'Položka pridaná do košíka!');
+    }
+
+    public function delete_cart_item(int $id)
+    {
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])){
+            unset($cart[$id]);
+        }
+        session()->put('cart', $cart);
+        return redirect()->back();
     }
 }

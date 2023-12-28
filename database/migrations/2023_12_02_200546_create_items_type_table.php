@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items_type', function (Blueprint $table) {
+        Schema::create('items_types', function (Blueprint $table) {
             $table->id();
             $table->string('type');
             $table->timestamps();
@@ -23,6 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items_type');
+        Schema::dropIfExists('items_types');
     }
 };
+//      * Show the form for editing the specified resource.
