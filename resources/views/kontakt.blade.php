@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('header_text')
+    Kontakt
+@endsection
 @section('content')
     <article>
         <div class="container pt-5">

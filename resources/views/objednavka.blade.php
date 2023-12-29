@@ -1,11 +1,14 @@
 @extends('layouts/app')
+@section('header_text')
+    Objednávka
+@endsection
 @section('content')
     <article>
         <div class="container pt-5">
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <h2 class="featurette-heading fw-normal lh-1 text-center">Objednávka</h2>
-                    <form class="mt-4" method="POST" action="{{ route('order.store')}}">
+                    <form class="mt-4" method="POST" action="{{ route('headerOrder.store')}}">
                         @csrf
                         <div class="row">
                             <div class="col-md-6 mb-4">

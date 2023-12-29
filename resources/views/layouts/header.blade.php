@@ -16,7 +16,7 @@
         <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
         </button>
         <div class="position-absolute top-50 start-50 translate-middle z-1 title py-3 px-5 rounded-3" >
-            <h1 class="title text-center ">Domov</h1>
+            <h1 class="title text-center ">@yield('header_text')</h1>
         </div>
     </div>
 </header>

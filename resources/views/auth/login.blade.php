@@ -53,6 +53,13 @@
                                         {{ __('Log in') }}
                                     </x-primary-button>
                                 </div>
+                                <div class="d-flex justify-content-center">
+                                    <p class="text-center text-muted mt-3 mb-0">Nie ste registrovaný?
+                                        <a class="fw-bold text-body" href="{{ route('register') }}">
+                                            {{ __('Registrujte sa') }}
+                                        </a>
+                                    </p>
+                                </div>
                             </form>
 
                         </div>

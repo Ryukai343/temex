@@ -119,32 +119,79 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return redirect()->route('items.index');
+        return redirect()->back();
     }
 
-    public function add_to_cart(Item $item)
+    public function add_to_cart(Request $request, Item $item)
     {
+        $this->validate($request, [
+            'inputQuantity' => 'nullable|numeric|min:1',
+        ]);
+        if ($request->inputQuantity != null) {
+            $quantity = $request->inputQuantity;
+        } else {
+            $quantity = 1;
+        }
         $cart = session()->get('cart', []);
+        $sum_price = session()->get('sum_price', 0);
         if (isset($cart[$item->id])){
-            $cart[$item->id]['quantity']++;
+            $cart[$item->id]['quantity'] += $quantity;
+            $cart[$item->id]['fullPrice'] = $cart[$item->id]['quantity'] * $item->price;
+
         } else {
             $cart[$item->id] = [
                 'name' => $item->name,
                 'price' => $item->price,
                 'picture' => $item->picture,
-                'quantity' => 1,
+                'quantity' => $quantity,
+                'fullPrice' => $item->price * $quantity,
             ];
         }
+        $sum_price += $item->price * $quantity;
         session()->put('cart', $cart);
+        session()->put('sum_price', $sum_price);
         return redirect()->back()->with('success', 'Položka pridaná do košíka!');
     }
 
     public function delete_cart_item(int $id)
     {
         $cart = session()->get('cart', []);
+        $sum_price = session()->get('sum_price', 0);
         if (isset($cart[$id])){
+            $sum_price -= $cart[$id]['fullPrice'];
             unset($cart[$id]);
         }
+        session()->put('cart', $cart);
+        session()->put('sum_price', $sum_price);
+        return redirect()->back();
+    }
+
+    public function cart_item_quantity_add(int $id)
+    {
+        $sum_price = session()->get('sum_price', 0);
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])){
+            $cart[$id]['quantity']++;
+            $cart[$id]['fullPrice'] = $cart[$id]['quantity'] * $cart[$id]['price'];
+            $sum_price += $cart[$id]['price'];
+        }
+        session()->put('sum_price', $sum_price);
+        session()->put('cart', $cart);
+        return redirect()->back();
+    }
+
+    public function cart_item_quantity_sub(int $id)
+    {
+        $sum_price = session()->get('sum_price', 0);
+        $cart = session()->get('cart', []);
+        if (isset($cart[$id])){
+            if ($cart[$id]['quantity'] > 1) {
+                $cart[$id]['quantity']--;
+                $cart[$id]['fullPrice'] = $cart[$id]['quantity'] * $cart[$id]['price'];
+                $sum_price -= $cart[$id]['price'];
+            }
+        }
+        session()->put('sum_price', $sum_price);
         session()->put('cart', $cart);
         return redirect()->back();
     }

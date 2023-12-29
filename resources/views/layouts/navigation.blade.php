@@ -38,12 +38,11 @@
                         @endif
                     @endauth
                 @endif
-                    @if(count((array) session('cart')) == 0)
-                        <li class="nav-item m-2 cart"><a href="{{ url('/košík') }}" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                    @else
-                        <li class="nav-item m-2 cart"><a href="{{ url('/košík') }}" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i><span class="badge">{{count((array) session('cart'))}}</span></a></li>
-                    @endif
-
+                    <li class="nav-item m-2 cart"><a href="{{ url('/košík') }}" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i>
+                            @if(count((array) session('cart')) != 0)
+                                {{count((array) session('cart'))}}
+                            @endif
+                        </a></li>
             </ul>
         </div>
     </div>

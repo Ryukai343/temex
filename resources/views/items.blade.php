@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('header_text')
+    Obchod
+@endsection
 @section('content')
         <article>
             @if(session('success'))
@@ -29,6 +32,15 @@
                             @endforeach
                         </ul>
                     </section>
+                    @if($items->count() == 0)
+                            <div class="col cols-12 my-5 py-5">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <h3 class="card-text mb-2 text-center">No items found</h3>
+                                    </div>
+                                </div>
+                            </div>
+                    @else
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3">
                         @foreach($items as $item)
                         <div class="col">
@@ -55,6 +67,7 @@
                         </div>
                         @endforeach
                     </div>
+                    @endif
                 </div>
             </div>
         </article>

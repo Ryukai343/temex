@@ -1,4 +1,7 @@
 @extends('layouts/app')
+@section('header_text')
+    Cenník
+@endsection
 @section('content')
     <article>
         <div class="container marketing pt-5">
