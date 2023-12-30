@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <h2 class="featurette-heading fw-normal lh-1 text-center">Objednávka</h2>
-                    <form class="mt-4" method="POST" action="{{ route('headerOrder.store')}}">
+                    <form class="mt-4" method="POST" action="{{ route('headerOrder.store')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-6 mb-4">
@@ -63,7 +63,7 @@
                                 <div class="form-outline" data-mdb-input-init>
                                     <label class="form-label" for="photo" >Priložte fotografiu</label>
                                     <input type="file" name="photo" class="form-control" id="photo" accept="image"/>
-                                    <x-input-error :messages="$errors->get('customPhoto')" class="mt-2" />
+                                    <x-input-error :messages="$errors->get('photo')" class="mt-2" />
                                 </div>
                             </div>
                         </div>

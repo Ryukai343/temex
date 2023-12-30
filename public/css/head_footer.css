@@ -19,14 +19,11 @@ a.logo {
     margin-right: 3vw !important;
     margin-bottom: 0 !important;
 }
-a.btn-dark:hover {
+.nav_button:hover {
     background-color: rgb( 33,37,41);
     color: #0d6efd;
 }
 
-li.cart:hover {
-    color: rgb(33,37,41);
-}
 a.footer{
     color: rgba(255, 255, 255, 0.55);
 }

@@ -12,7 +12,7 @@ class ItemsOrderController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

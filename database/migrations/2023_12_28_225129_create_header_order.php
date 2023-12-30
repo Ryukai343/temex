@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('psc');
             $table->string('photo');
             $table->string('description');
-            $table->enum('status', ['nová', 'otvorená', 'dokončená'])->default('nová');
+            $table->enum('status', ['nová', 'otvorená', 'vybavená'])->default('nová');
             $table->integer('total_price');
             $table->timestamps();
         });

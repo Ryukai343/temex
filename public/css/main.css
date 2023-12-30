@@ -1,5 +1,4 @@
 
-
 h1.title{
     text-shadow: #989898 1px 0 10px;
     color: rgba(225, 225, 225, 1);
@@ -18,6 +17,7 @@ body {
 article div.container {
     background-color: rgba(236, 236, 236, 0.85);
     max-width: 90vw;
+    min-height: 25vw;
 }
 
 .carousel-item {

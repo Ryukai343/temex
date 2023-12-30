@@ -1,10 +1,13 @@
-<nav class="navbar navbar-expand-xl navbar-dark bg-dark position-fixed z-3" >
+@php use App\Http\Controllers\ProfileController; @endphp
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark position-fixed z-3 px-1">
     <div class="container-fluid">
-        <a href="{{ url('/') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none logo">
-            <img src="{{ asset('image/Logo.png') }}" class="logo"  alt="logo">
+        <a href="{{ url('/') }}"
+           class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none logo">
+            <img src="{{ asset('image/Logo.png') }}" class="logo" alt="logo">
             <h1 class="logo">Temex</h1>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+                aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -15,34 +18,51 @@
                 <li class="nav-item"><a href="{{ url('/items') }}" class="nav-link">Obchod</a></li>
                 <li class="nav-item"><a href="{{ url('/cennik') }}" class="nav-link">Cenník</a></li>
                 <li class="nav-item"><a href="{{ url('/kontakt') }}" class="nav-link">Kontakt</a></li>
+                <li class="nav-item"><form role="search" method="GET" action="{{ route('items.index') }}">
+                    <div class="input-group">
+                        <input class="form-control" name="input" id="input" type="search" placeholder="Search">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary "><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form></li>
             </ul>
-            <form role="search" method="GET" action="{{ route('items.index') }}">
-                <div class="input-group">
-                    <input class="form-control" name="input" id="input" type="search" placeholder="Search">
-                    <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </form>
-            <ul class="navbar-nav mr-3  nav-pills nav-fill d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+            <ul class="navbar-nav nav-pills nav-fill d-flex flex-wrap align-items-center justify-content-between justify-content-lg-start px-2">
                 @if (Route::has('login'))
                     @auth
-                        <li class="nav-item m-2">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-light" >Odhlásenie</button>
-                            </form>
-                        </li>
+                        <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle nav_button" type="button"
+                                    id="dropdownMenuButton" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-user"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
+                                <a class="dropdown-item" href="{{ route('headerOrder.index') }}">Objednávky</a>
+                                @if(ProfileController::roleCheck(auth()->user()->role) )
+                                    <a class="dropdown-item" href="{{ route('profile.usersShow') }}">Spravovať
+                                        uživateľov</a>
+                                @endif
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Odhlásenie</button>
+                                </form>
+                            </div>
+                        </div>
                     @else
-                        <li class="nav-item m-2"><a href="{{ route('login') }}" class="btn btn-outline-light ">Prihlásenie</a></li>
+                        <li class="nav-item m-2"><a href="{{ route('login') }}" class="btn btn-outline-light ">Prihlásenie</a>
+                        </li>
                         @if (Route::has('register'))
-                            <li class="nav-item mr-2"><a href="{{ route('register') }}" class="btn btn-primary">Registrácia</a></li>
+                            <li class="nav-item mr-2"><a href="{{ route('register') }}" class="btn btn-primary">Registrácia</a>
+                            </li>
                         @endif
                     @endauth
                 @endif
-                    <li class="nav-item m-2 cart"><a href="{{ url('/košík') }}" class="btn btn-dark"><i class="fa-solid fa-cart-shopping"></i>
-                            @if(count((array) session('cart')) != 0)
-                                {{count((array) session('cart'))}}
-                            @endif
-                        </a></li>
+                <li class="nav-item"><a href="{{ url('/košík') }}" class="btn btn-dark nav_button"><i
+                            class="fa-solid fa-cart-shopping"></i>
+                        @if(count((array) session('cart')) != 0)
+                            {{count((array) session('cart'))}}
+                        @endif
+                    </a></li>
             </ul>
         </div>
     </div>

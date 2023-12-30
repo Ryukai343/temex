@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('profilePage', [
             'user' => $request->user(),
         ]);
     }
@@ -24,19 +25,37 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request)
     {
-        $request->user()->fill($request->validated());
+       // $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        //if ($request->user()->isDirty('email')) {
+         //   $request->user()->email_verified_at = null;
+        //}
 
-        $request->user()->save();
+        //$request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        //return Redirect::route('items')->with('status', 'Profil bol aktualizovaný.');
+        //return Redirect::back()->with('status', 'Profil bol aktualizovaný.');
+        return 'asada';
     }
 
+    public function usersShow(Request $request): View
+    {
+        $users = User::all();
+        return view('users', compact('users'));
+    }
+
+    public function userChangeRole(Request $request, User $user): RedirectResponse
+    {
+        if ($user->role == 'admin') {
+            $user->role = 'user';
+        } else {
+            $user->role = 'admin';
+        }
+        $user->save();
+        return Redirect::back();
+    }
     /**
      * Delete the user's account.
      */
@@ -56,5 +75,9 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+    static public function roleCheck(string $role): bool
+    {
+        return $role == 'admin';
     }
 }

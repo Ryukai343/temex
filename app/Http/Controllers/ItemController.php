@@ -111,7 +111,7 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public static function destroy(string $id)
     {
         $item = Item::findOrFail($id);
         if(file_exists('item_Images/'.$item->picture)){

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\HeaderOrder;
 use App\Models\ItemsOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HeaderOrderController extends Controller
 {
@@ -13,7 +15,13 @@ class HeaderOrderController extends Controller
      */
     public function index()
     {
-        //
+        if (ProfileController::roleCheck(auth()->user()->role)) {
+            $orders = HeaderOrder::orderBy('created_at')->get();
+        }else {
+            $orders = HeaderOrder::orderBy('created_at')->where('user', auth()->user()->id)->get();
+        }
+
+        return view('orders', compact('orders'));
     }
 
     /**
@@ -28,7 +36,7 @@ class HeaderOrderController extends Controller
             'phone' => 'required|digits:10',
             'city' => 'required|string',
             'zip' => 'required|numeric',
-            'customPhoto' => 'image|size:20480',
+            'photo' => 'image|max:5120',
             'description' => 'required|string|max:200|nullable',
         ]);
         if (auth()->user() == null) {
@@ -46,9 +54,9 @@ class HeaderOrderController extends Controller
         $headerOrder->total_price = $sum_price;
         $headerOrder->status = 'nová';
 
-        if ($request->customPhoto !== null) {
-            $headerOrder->photo = $headerOrder->user . '_' . time() . '.' . $request->customPhoto->extension();
-            $request->customPhoto->move(public_path('order_images'), $headerOrder->photo);
+        if ($request->photo !== null) {
+            $headerOrder->photo = $headerOrder->user . '_' . time() . '.' . $request->photo->extension();
+            $request->photo->move(public_path('order_images'), $headerOrder->photo);
         }else{
             $headerOrder->photo = 'Bez obrázku';
         }
@@ -71,17 +79,35 @@ class HeaderOrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function detail(Request $request, HeaderOrder $order)
     {
-        //
+        if (ProfileController::roleCheck(auth()->user()->role) && $order->status == 'nová') {
+            $order->status = 'otvorená';
+            $order->save();
+        }
+        $items = DB::table('items_orders')
+            ->join('items', 'items_orders.item_id', '=', 'items.id')
+            ->where('header_order_id', $order->id)
+            ->select('*')
+            ->get();
+        $headerOrder = $order;
+        return view('order_detail', compact('headerOrder', 'items'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, HeaderOrder $headerOrder)
     {
-        //
+        if ($headerOrder->status == 'vybavená') {
+            $headerOrder->status = 'otvorená';
+        }else {
+            $headerOrder->status = 'vybavená';
+        }
+        //return $headerOrder;
+
+        $headerOrder->save();
+        return redirect()->back();
     }
 
     /**
