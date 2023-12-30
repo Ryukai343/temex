@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('header_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user');
+            $table->string('name');
+            $table->string('surname');
             $table->string('email');
             $table->string('phone');
             $table->string('city');

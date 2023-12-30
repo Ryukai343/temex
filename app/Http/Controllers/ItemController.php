@@ -37,7 +37,7 @@ class ItemController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|unique:'.Item::class,
-            'type'=> 'required|exists:'.ItemsType::class.',type',
+            'type'=> 'required|exists:'.ItemsType::class.',id',
             'description' => 'required|string|max:200',
             'picture' => 'nullable|image|max:5120',
             'price' => 'required|numeric',
@@ -46,7 +46,7 @@ class ItemController extends Controller
         $item->name = $request->name;
         $item->description = $request->description;
         $item->price = $request->price;
-        $item->item_type_id = ItemsType::where('type', $request->type)->value('id');
+        $item->item_type_id = $request->type;
 
         // Save image to storage
         if ($request->picture !== null) {
@@ -61,7 +61,7 @@ class ItemController extends Controller
         // Store the data in your table
         //$item = Item::create($validatedData);
 
-        return redirect()->route( 'items.index');
+        return redirect()->route( 'items.index')->with('success', 'Položka bola vytvorená.');
     }
 
     public function create()
@@ -101,7 +101,7 @@ class ItemController extends Controller
             unset($data['picture']);
         }
         $item->update($data);
-        return redirect()->route( 'items.index');
+        return redirect()->route( 'items.index')->with('success', 'Položka bola zmenená.');
     }
 
     public function edit(Item $item)
@@ -119,80 +119,6 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return redirect()->back();
-    }
-
-    public function add_to_cart(Request $request, Item $item)
-    {
-        $this->validate($request, [
-            'inputQuantity' => 'nullable|numeric|min:1',
-        ]);
-        if ($request->inputQuantity != null) {
-            $quantity = $request->inputQuantity;
-        } else {
-            $quantity = 1;
-        }
-        $cart = session()->get('cart', []);
-        $sum_price = session()->get('sum_price', 0);
-        if (isset($cart[$item->id])){
-            $cart[$item->id]['quantity'] += $quantity;
-            $cart[$item->id]['fullPrice'] = $cart[$item->id]['quantity'] * $item->price;
-
-        } else {
-            $cart[$item->id] = [
-                'name' => $item->name,
-                'price' => $item->price,
-                'picture' => $item->picture,
-                'quantity' => $quantity,
-                'fullPrice' => $item->price * $quantity,
-            ];
-        }
-        $sum_price += $item->price * $quantity;
-        session()->put('cart', $cart);
-        session()->put('sum_price', $sum_price);
-        return redirect()->back()->with('success', 'Položka pridaná do košíka!');
-    }
-
-    public function delete_cart_item(int $id)
-    {
-        $cart = session()->get('cart', []);
-        $sum_price = session()->get('sum_price', 0);
-        if (isset($cart[$id])){
-            $sum_price -= $cart[$id]['fullPrice'];
-            unset($cart[$id]);
-        }
-        session()->put('cart', $cart);
-        session()->put('sum_price', $sum_price);
-        return redirect()->back();
-    }
-
-    public function cart_item_quantity_add(int $id)
-    {
-        $sum_price = session()->get('sum_price', 0);
-        $cart = session()->get('cart', []);
-        if (isset($cart[$id])){
-            $cart[$id]['quantity']++;
-            $cart[$id]['fullPrice'] = $cart[$id]['quantity'] * $cart[$id]['price'];
-            $sum_price += $cart[$id]['price'];
-        }
-        session()->put('sum_price', $sum_price);
-        session()->put('cart', $cart);
-        return redirect()->back();
-    }
-
-    public function cart_item_quantity_sub(int $id)
-    {
-        $sum_price = session()->get('sum_price', 0);
-        $cart = session()->get('cart', []);
-        if (isset($cart[$id])){
-            if ($cart[$id]['quantity'] > 1) {
-                $cart[$id]['quantity']--;
-                $cart[$id]['fullPrice'] = $cart[$id]['quantity'] * $cart[$id]['price'];
-                $sum_price -= $cart[$id]['price'];
-            }
-        }
-        session()->put('sum_price', $sum_price);
-        session()->put('cart', $cart);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Položka bola vymazaná.');
     }
 }

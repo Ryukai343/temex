@@ -14,7 +14,7 @@
                 <div class="container py-4">
                     @if(auth()->user() != null && ProfileController::roleCheck(auth()->user()->role) )
                         <a href="{{ url('/createItem') }}" class="btn btn-sm btn-outline-secondary">Pridať položku</a>
-                        <a href="{{ url('/createItemType') }}" class="btn btn-sm btn-outline-secondary">Pridať typ položky</a>
+                        <a href="{{ url('/createItemsType') }}" class="btn btn-sm btn-outline-secondary">Pridať typ položky</a>
                         <hr>
                     @endif
                     <div id="mobile-filter" class="d-md-none">
@@ -86,7 +86,10 @@
                                                 </form>
                                                 <a href="{{ route('items.edit', $item) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-pen-to-square"></i></a>
                                             @endif
-                                            <a type="button" href="{{ route('items.add_to_cart', $item) }}" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-cart-shopping"></i></a>
+                                            <form method="POST" action="{{ route('cart.item_add', $item) }}">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-cart-shopping"></i></button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Order;
+use App\Models\HeaderOrder;
+use App\Models\ItemsOrder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use function Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
@@ -15,7 +16,13 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        if (ProfileController::roleCheck(auth()->user()->role)) {
+            $orders = HeaderOrder::orderBy('created_at')->get();
+        }else {
+            $orders = HeaderOrder::orderBy('created_at')->where('user', auth()->user()->id)->get();
+        }
+
+        return view('orders', compact('orders'));
     }
 
     /**
@@ -23,59 +30,92 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = $request->validate([
+        $request->validate([
             'firstName'=> 'required|string|max:20',
             'lastName'=> 'required|string|max:20',
             'email' => 'required|email',
             'phone' => 'required|digits:10',
-            'city' => 'required|string|max:25',
+            'city' => 'required|string',
             'zip' => 'required|numeric',
-            'customPhoto' => 'image|size:20480',
-            'description' => 'string|max:200|nullable'
+            'photo' => 'image|max:5120',
+            'description' => 'required|string|max:200|nullable',
         ]);
-        $curl = curl_init();
+        if (auth()->user() == null) {
+            return redirect()->route('login');
+        }
+        $headerOrder = new HeaderOrder();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://send.api.mailtrap.io/api/send',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS =>'{"from":{"email":"dorb343@gmail.com","name":"Mailtrap Test"},"to":[{"email":"dorb343@gmail.com"}],"subject":"You are awesome!","text":"Congrats for sending test email with Mailtrap!","category":"Integration Test"}',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: 4bb04cbf48c5f6abe1e5e3df80681e8d',
-                'Content-Type: application/json'
-            ),
-        ));
+        $headerOrder->user = auth()->user()->id;
+        $headerOrder->name = $request->firstName;
+        $headerOrder->surname = $request->lastName;
+        $headerOrder->email = $request->email;
+        $headerOrder->phone = $request->phone;
+        $headerOrder->city = $request->city;
+        $headerOrder->psc = $request->zip;
+        $headerOrder->description = $request->description;
+        $sum_price = session()->get('sum_price', 0);
+        $headerOrder->total_price = $sum_price;
+        $headerOrder->status = 'nová';
 
-        $response = curl_exec($curl);
-
-        if ($response === false) {
-            echo 'cURL Error: ' . curl_error($curl);
+        if ($request->photo !== null) {
+            $headerOrder->photo = $headerOrder->user . '_' . time() . '.' . $request->photo->extension();
+            $request->photo->move(public_path('order_images'), $headerOrder->photo);
+        }else{
+            $headerOrder->photo = 'Bez obrázku';
         }
 
-        curl_close($curl);
-        echo $response;
+        $headerOrder->save();
+        $items = session()->get('cart', []);
+        foreach ($items as $id => $item) {
+            $itemsOrder = new ItemsOrder();
+            $itemsOrder->header_order_id = $headerOrder->id;
+            $itemsOrder->item_id = $id;
+            $itemsOrder->quantity = $item['quantity'];
+            $itemsOrder->save();
+        }
+        session()->forget('cart');
+        $sum_price = 0;
+        session()->put('sum_price', $sum_price);
+        return redirect()->route('order.detail', $headerOrder);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function detail(Request $request, HeaderOrder $order)
     {
-        //
+        if (!ProfileController::roleCheck(auth()->user()->role) && auth()->user()->id != $order->user) {
+            return redirect()->route('items.index');
+        }
+        if (ProfileController::roleCheck(auth()->user()->role) && $order->status == 'nová') {
+            $order->status = 'otvorená';
+            $order->save();
+        }
+        $items = DB::table('items_orders')
+            ->join('items', 'items_orders.item_id', '=', 'items.id')
+            ->where('header_order_id', $order->id)
+            ->select('*')
+            ->get();
+        $headerOrder = $order;
+        return view('order_detail', compact('headerOrder', 'items'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function send(Request $request)
+    public function update(Request $request, HeaderOrder $headerOrder)
     {
+        if ($headerOrder->status == 'vybavená') {
+            $headerOrder->status = 'otvorená';
+            $text = 'Objednávka bola znovu otvorená.';
+        }else {
+            $headerOrder->status = 'vybavená';
+            $text = 'Objednávka bola ukončená.';
+        }
+        //return $headerOrder;
 
-        return;
+        $headerOrder->save();
+        return redirect()->back()->with('status', $text);
     }
 
     /**

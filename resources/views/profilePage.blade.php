@@ -4,12 +4,17 @@
 @endsection
 @section('content')
 <article>
+    @if(session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="container rounded mt-5 mb-5">
-        @if(session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
         <div class="row">
             <div class="col-md-5 ">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">

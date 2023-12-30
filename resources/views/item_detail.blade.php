@@ -18,7 +18,7 @@
                         <div class="fs-5 mb-3">
                             <span>{{ $item->price }}€</span>
                         </div>
-                        <form method="get" action="{{ route('items.add_to_cart', $item) }}" class="d-flex">
+                        <form method="POST" action="{{ route('cart.item_add', $item) }}" class="d-flex">
                             @csrf
                             <input class="form-control text-center me-3" name="inputQuantity" id="inputQuantity" type="number" value="1"/>
                             <button type="submit"  class="btn btn-outline-dark flex-shrink-0"><i class="fa-solid fa-cart-shopping"></i>Vložiť do košíka</button>

@@ -18,10 +18,7 @@ class ItemTypeController extends Controller
 
         $item->save();
 
-        // Store the data in your table
-        //$item = Item::create($validatedData);
-
-        return redirect()->route( 'items.index');
+        return redirect()->route( 'items.index')->with('success', 'Kategória bola vytvorená.');
     }
     public function edit(Request $request, ItemsType $type)
     {
@@ -36,7 +33,7 @@ class ItemTypeController extends Controller
         ]);
         $type->type = $request->type;
         $type->save();
-        return redirect()->route( 'items.index');
+        return redirect()->route( 'items.index')->with('success', 'Kategória bola zmenená.');
     }
 
 
@@ -46,6 +43,6 @@ class ItemTypeController extends Controller
             ItemController::destroy($item->id);
         }
         $type->delete();
-        return redirect()->route( 'items.index');
+        return redirect()->route( 'items.index')->with('success', 'Kategória bola odstránená.');
     }
 }

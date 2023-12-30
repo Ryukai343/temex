@@ -29,12 +29,13 @@
                                     </div>
                                     <div class="form-outline mb-4">
                                         <label for="item_types" class="form-label">Kategória</label>
-                                        <input name="type" list="items_type" value="" class="form-control form-control-lg" required>
-                                        <datalist id="items_type">
+                                        <select class="form-select" id="item_types" name="type">
                                             @foreach($types as $type)
-                                                <option value="{{ $type->type }}"></option>
+                                                <option value="{{ $type->id }}">{{ $type->type }}</option>
                                             @endforeach
-                                        </datalist>
+                                            <option selected>Vyber kategóriu</option>
+                                        </select>
+
                                         <x-input-error :messages="$errors->get('type')" class="mt-2" />
                                     </div>
                                     <div class="form-outline mb-4">

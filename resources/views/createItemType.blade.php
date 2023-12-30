@@ -20,7 +20,7 @@
                     <div class="card">
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Pridanie typu položky</h2>
-                            <form method="POST" action="{{ route('itemType.store') }}"  enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('itemsType.store') }}"  enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-outline mb-4">
                                     <label for="type" class="form-label">Kategoria</label>

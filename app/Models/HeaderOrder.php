@@ -11,6 +11,8 @@ class HeaderOrder extends Model
 
     protected $fillable = [
         'user',
+        'name',
+        'surname',
         'email',
         'phone',
         'city',

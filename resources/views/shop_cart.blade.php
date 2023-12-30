@@ -16,7 +16,6 @@
                                         <div class="p-5">
                                             <div class="d-flex justify-content-between align-items-center mb-5">
                                                 <h1 class="fw-bold mb-0 text-black">Nákupný košík</h1>
-                                                <h6 class="mb-0 text-muted">{{count((array) session('cart'))}} položiek</h6>
                                             </div>
                                             <hr class="my-4">
                                             @foreach(session('cart') as $id => $item )
@@ -30,22 +29,31 @@
                                                         <h6 class="text-black mb-0 text-center text-md-start">{{ $item['price'] }}€</h6>
                                                     </div>
                                                     <div class="col-md-3 justify-content-between align-items-center col-lg-3 col-xl-2 d-flex">
-                                                        <a class="btn btn-link px-2" href="{{ route('items.cart_item_quantity_sub', $id) }}">
-                                                            <i class="fas fa-minus"></i>
-                                                        </a>
+                                                        <form method="POST" action="{{ route('cart.item_quantity_sub', $id) }}">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-link px-2">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+                                                        </form>
 
                                                         <h5 class="mb-0">{{ $item['quantity'] }}</h5>
 
-                                                        <a class="btn btn-link px-2"
-                                                           href="{{ route('items.cart_item_quantity_add', $id) }}">
-                                                            <i class="fas fa-plus"></i>
-                                                        </a>
+                                                        <form method="POST" action="{{ route('cart.item_quantity_add', $id) }}">
+                                                            @csrf
+                                                            <button class="btn btn-link px-2" type="submit">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                                         <h5 class="mb-0 text-center text-md-end">{{ $item['fullPrice'] }}€</h5>
                                                     </div>
                                                     <div class="col-md-1 col-lg-1 col-xl-1 text-end align-items-center">
-                                                        <a href="{{ route('items.delete_cart_item', $id) }}" class="text-muted text-center"><i class="fas fa-times"></i></a>
+                                                        <form method="POST" action="{{ route('cart.item_delete', $id) }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button  class="btn text-muted text-center" type="submit"><i class="fas fa-times"></i></button>
+                                                        </form>
                                                     </div>
                                                 </div>
 

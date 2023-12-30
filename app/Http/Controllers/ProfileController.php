@@ -18,26 +18,33 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         return view('profilePage', [
-            'user' => $request->user(),
+            'user' => Auth::user(),
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request)
+    public function update(Request $request)
     {
-       // $request->user()->fill($request->validated());
+        if ($request->user() != Auth::user()) {
+            return Redirect::back()->withErrors(['error' => 'Nemôžete upravovať profil iného používateľa.']);
+        }
+        $request->validate([
+            'firstName'=> 'required|string|max:20',
+            'lastName'=> 'required|string|max:20',
+            'email' => 'required|email',
+            'phone' => 'digits:10|nullable',
+            'city' => 'string|nullable',
+            'psc' => 'numeric|nullable',
+        ]);
+        $data = $request->all();
+        $data['name'] = $request->firstName;
+        $data['surname'] = $request->lastName;
 
-        //if ($request->user()->isDirty('email')) {
-         //   $request->user()->email_verified_at = null;
-        //}
+        $request->user()->update($data);
 
-        //$request->user()->save();
-
-        //return Redirect::route('items')->with('status', 'Profil bol aktualizovaný.');
-        //return Redirect::back()->with('status', 'Profil bol aktualizovaný.');
-        return 'asada';
+        return Redirect::back()->with('status', 'Profil bol aktualizovaný.');
     }
 
     public function usersShow(Request $request): View
@@ -48,13 +55,16 @@ class ProfileController extends Controller
 
     public function userChangeRole(Request $request, User $user): RedirectResponse
     {
+        if (auth()->user() == $user) {
+            return Redirect::back()->with(['error' => 'Nemôžete zmeniť svoju rolu.']);
+        }
         if ($user->role == 'admin') {
             $user->role = 'user';
         } else {
             $user->role = 'admin';
         }
         $user->save();
-        return Redirect::back();
+        return Redirect::back()->with(['status' => 'Zmenili ste rolu používateľa.']);
     }
     /**
      * Delete the user's account.

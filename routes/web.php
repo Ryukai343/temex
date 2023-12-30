@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\HeaderOrderController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ItemTypeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\Admin;
-use App\Http\Middleware\Authenticate;
-use App\Models\HeaderOrder;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,51 +35,66 @@ Route::get('/onas', function () {
     return view('onas');
 });
 
+// Items
+Route::get('/items/{type?}', [ItemController::class, 'index'])->name('items.index');
+Route::get('/items/detail/{item}', [ItemController::class, 'show'])->name('items.show');
 
-Route::get('/items/{type?}', [\App\Http\Controllers\ItemController::class, 'index'])->name('items.index');
-Route::get('/items/show/{item}', [\App\Http\Controllers\ItemController::class, 'show'])->name('items.show');
-Route::get('/items/cart/add/{item}', [\App\Http\Controllers\ItemController::class, 'add_to_cart'])->name('items.add_to_cart');
-Route::get('/items/cart/delete/{id}', [\App\Http\Controllers\ItemController::class, 'delete_cart_item'])->name('items.delete_cart_item');
-Route::get('/items/cart/addQuantity/{id}', [\App\Http\Controllers\ItemController::class, 'cart_item_quantity_add'])->name('items.cart_item_quantity_add');
-Route::get('/items/cart/subQuantity/{id}', [\App\Http\Controllers\ItemController::class, 'cart_item_quantity_sub'])->name('items.cart_item_quantity_sub');
-
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Cart
+Route::post('/cart/add/{item}', [CartController::class, 'item_add'])->name('cart.item_add');
 Route::middleware('auth')->group(function () {
-    Route::get('/orders', [HeaderOrderController::class, 'index'])->name('headerOrder.index');
-    Route::get('/orderDetail/{order}', [HeaderOrderController::class, 'detail'])->name('order.detail');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/cart/delete/{id}', [CartController::class, 'item_delete'])->name('cart.item_delete');
+    Route::post('/cart/addQuantity/{id}', [CartController::class, 'item_quantity_add'])->name('cart.item_quantity_add');
+    Route::post('/cart/subQuantity/{id}', [CartController::class, 'item_quantity_sub'])->name('cart.item_quantity_sub');
+});
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
+
+//authorization
+Route::middleware('auth')->group(function () {
+    //order
     Route::get('/košík', function () {
         return view('shop_cart');
     });
     Route::get('/objednavka', function () {
+        if (!session('cart')) {
+            return view('shop_cart');
+        }
         return view('objednavka');
     });
-    Route::post('/order', [\App\Http\Controllers\HeaderOrderController::class, 'store'])->name('headerOrder.store');
+    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+    Route::get('/orders', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/orderDetail/{order}', [OrderController::class, 'detail'])->name('order.detail');
+
+    //profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//admin
 Route::middleware([Admin::class])->group(function () {
+    //users control
     Route::get('/users', [ProfileController::class, 'usersShow'])->name('profile.usersShow');
-    Route::post('/createItem', [\App\Http\Controllers\ItemController::class, 'store'])->name('items.store');
-    Route::post('/items/{item}', [\App\Http\Controllers\ItemController::class, 'update'])->name('items.update');
-    Route::get('/createItem', [\App\Http\Controllers\ItemController::class, 'create'])->name('items.create');
-    Route::get('/items/edit/{item}', [\App\Http\Controllers\ItemController::class, 'edit'])->name('items.edit');
-    Route::delete('/items/{id}', [\App\Http\Controllers\ItemController::class, 'destroy'])->name('items.destroy');
-    Route::get('/createItemType', function () {
+    Route::post('/user/role/{user}', [ProfileController::class, 'userChangeRole'])->name('user.changeRole');
+    //order change status
+    Route::post('/order/status/{headerOrder}', [OrderController::class, 'update'])->name('order.update');
+    //items
+    Route::get('/createItem', [ItemController::class, 'create'])->name('items.create');
+    Route::post('/createItem', [ItemController::class, 'store'])->name('items.store');
+    Route::get('/items/edit/{item}', [ItemController::class, 'edit'])->name('items.edit');
+    Route::post('/items/update/{item}', [ItemController::class, 'update'])->name('items.update');
+    Route::delete('/items/delete/{id}', [ItemController::class, 'destroy'])->name('items.destroy');
+
+
+    //items type
+    Route::get('/createItemsType', function () {
         return view('createItemType');
     });
-    Route::post('/order/status/{headerOrder}', [HeaderOrderController::class, 'update'])->name('order.update');
-    Route::post('/user/role/{user}', [ProfileController::class, 'userChangeRole'])->name('user.changeRole');
-    Route::post('/createItemType', [\App\Http\Controllers\ItemTypeController::class, 'store'])->name('itemType.store');
-    Route::get('/ItemType/{type}', [\App\Http\Controllers\ItemTypeController::class, 'edit'])->name('itemsType.edit');
-    Route::post('/ItemType/edit/{type}', [\App\Http\Controllers\ItemTypeController::class, 'update'])->name('itemsType.update');
-    Route::delete('/ItemType/delete/{type}', [\App\Http\Controllers\ItemTypeController::class, 'destroy'])->name('itemsType.destroy');
+    Route::post('/createItemsType', [ItemTypeController::class, 'store'])->name('itemsType.store');
+    Route::get('/ItemsType/edit/{type}', [ItemTypeController::class, 'edit'])->name('itemsType.edit');
+    Route::post('/ItemsType/update/{type}', [ItemTypeController::class, 'update'])->name('itemsType.update');
+    Route::delete('/ItemsType/delete/{type}', [ItemTypeController::class, 'destroy'])->name('itemsType.destroy');
 });
 
 require __DIR__.'/auth.php';

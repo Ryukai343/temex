@@ -32,12 +32,12 @@
                     @auth
                         <div class="dropdown">
                             <button class="btn btn-dark dropdown-toggle nav_button" type="button"
-                                    id="dropdownMenuButton" data-bs-toggle="dropdown">
+                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa-solid fa-user"></i>
                             </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="{{ route('profile.edit') }}">Profil</a>
-                                <a class="dropdown-item" href="{{ route('headerOrder.index') }}">Objednávky</a>
+                                <a class="dropdown-item" href="{{ route('order.index') }}">Objednávky</a>
                                 @if(ProfileController::roleCheck(auth()->user()->role) )
                                     <a class="dropdown-item" href="{{ route('profile.usersShow') }}">Spravovať
                                         uživateľov</a>
