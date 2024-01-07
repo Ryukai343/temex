@@ -18,6 +18,7 @@
         <div class="row">
             <div class="col-md-5 ">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    //TODO: upraviť obrázok
                     <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
                     <span class="text-black-50 mt-4">{{$user->email}}</span>
                 </div>
@@ -71,6 +72,20 @@
                         <div class="mt-5 text-center">
                             <button class="btn btn-primary profile-button" type="submit">Uložiť zmeny</button>
                         </div>
+                    </form>
+                    <form method="POST" action="{{ route('password.update')}}">
+                        @csrf
+                        @method('PUT')
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <label class="labels">Nove heslo</label>
+                            <input type="password" class="form-control" id="password" name="password"  placeholder="Nové heslo">
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Zmeniť heslo</button>
+                    </div>
                     </form>
                 </div>
             </div>

@@ -17,6 +17,7 @@
                         <a href="{{ url('/createItemsType') }}" class="btn btn-sm btn-outline-secondary">Pridať typ položky</a>
                         <hr>
                     @endif
+                    //TODO: pridať možnosť filtrovania ceny a zoradenia
                     <div id="mobile-filter" class="d-md-none">
                         <div class="py-3">
                             <h5 class="font-weight-bold">Kategórie</h5>

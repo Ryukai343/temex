@@ -17,20 +17,20 @@
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">
                     <div class="card" style="border-radius: 15px;">
                         <div class="card-body p-5">
-                            <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+                            <h2 class="text-uppercase text-center mb-5">Vytvorte si účet</h2>
                                     <form method="POST" action="{{ route('register') }}">
                                         @csrf
 
                                         <!-- Name -->
                                         <div class="form-outline mb-4">
-                                            <x-input-label for="firstName" :value="__('Name')" />
+                                            <x-input-label for="firstName" :value="__('Meno')" />
                                             <x-text-input id="firstName" class="form-control form-control-lg" type="text" name="firstName" :value="old('firstName')" required autofocus autocomplete="firstName" />
                                             <x-input-error :messages="$errors->get('firstName')" class="mt-2" />
                                         </div>
 
                                         <!-- Surname -->
                                         <div class="form-outline mb-4">
-                                            <x-input-label for="lastName" :value="__('Name')" />
+                                            <x-input-label for="lastName" :value="__('Priezvisko')" />
                                             <x-text-input id="lastName" class="form-control form-control-lg" type="text" name="lastName" :value="old('lastName')" required autofocus autocomplete="lastName" />
                                             <x-input-error :messages="$errors->get('lastName')" class="mt-2" />
                                         </div>
@@ -44,7 +44,7 @@
 
                                         <!-- Password -->
                                         <div class="form-outline mb-4">
-                                            <x-input-label for="password" :value="__('Password')" />
+                                            <x-input-label for="password" :value="__('Heslo')" />
 
                                             <x-text-input id="password" class="form-control form-control-lg"
                                                             type="password"
@@ -56,7 +56,7 @@
 
                                         <!-- Confirm Password -->
                                         <div class="form-outline mb-4">
-                                            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                                            <x-input-label for="password_confirmation" :value="__('Potvrdenie hesla')" />
 
                                             <x-text-input id="password_confirmation" class="form-control form-control-lg"
                                                             type="password"
