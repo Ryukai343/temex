@@ -29,7 +29,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit" class=" pushable btn btn-primary  btn-block btn-lg gradient-custom-4 ">Vytvoriť typ položky</button>
+                                    <button type="submit" class=" pushable btn btn-primary  btn-block btn-lg gradient-custom-4 ">Zmeniť názov typu položky</button>
                                 </div>
                             </form>
                         </div>

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\ItemsType;
-use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use function Illuminate\Support\Facades\Http;
 
 class ItemController extends Controller
@@ -49,12 +49,13 @@ class ItemController extends Controller
         $item->item_type_id = $request->type;
 
         // Save image to storage
-        if ($request->picture !== null) {
-            $item->picture = $item->name . '_' . time() . '.' . $request->picture->extension();
-            $request->picture->move(public_path('item_Images'), $item->picture);
-        }else{
-            $item->picture = 'Bez obrázku';
-        }
+//        if ($request->picture !== null) {
+//            $item->picture = $item->name . '_' . time() . '.' . $request->picture->extension();
+//            $request->picture->move(public_path('item_Images'), $item->picture);
+        $item->picture = $this->createPicture($request->picture, $request->name);
+//        }else{
+//            $item->picture = 'Bez obrázku';
+//        }
 
         $item->save();
 
@@ -91,9 +92,9 @@ class ItemController extends Controller
         ]);
         $data = $request->all();
         if ($request->hasFile('picture')) {
-            $picture_name = $request->name.'_'.time().'.'.$request->picture->extension();
-            $data['picture'] = $picture_name;
-            $request->picture->move(public_path('item_Images'), $picture_name);
+//            $picture_name = $request->name.'_'.time().'.'.$request->picture->extension();
+//            $request->picture->move(public_path('item_Images'), $picture_name);
+            $data['picture'] = $this->createPicture($request->picture, $request->name);
             if(file_exists('item_Images/'.$item->picture)){
                 unlink('item_Images/'.$item->picture);
             }
@@ -120,5 +121,16 @@ class ItemController extends Controller
 
         $item->delete();
         return redirect()->back()->with('success', 'Položka bola vymazaná.');
+    }
+
+    public function createPicture(?UploadedFile $picture, string $name) {
+        if ($picture !== null) {
+            $pictureName = $name . '_' . time() . '.' . $picture->extension();
+            $picture->move(public_path('item_Images'), $pictureName);
+        }else{
+            $pictureName = 'Bez obrázku';
+        }
+
+        return $pictureName;
     }
 }
