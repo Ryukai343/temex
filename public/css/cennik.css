@@ -3,13 +3,70 @@ i.fa-brush {
 }
 
 img.article_picture {
-    width: 20vw;
-    height: 20vh;
+    /*--width: min(100%, 40vw);*/
+    width: 100%;
+    height: 40vh;
     align-content: center;
     min-height: 100px;
     min-width: 200px;
+    max-width: 450px;
+    max-height: 350px;
 }
 img.sander_icon {
     height: 45px;
     margin-right: 5px;
+}
+
+/*End*/
+
+
+.image-comparison {
+    max-width: 500px;
+    max-height: 350px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.image-comparison img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left;
+}
+
+.image-comparison .images-container {
+    position: relative;
+    display: flex;
+}
+
+.image-comparison .images-container .before-image {
+    position: absolute;
+    top: 0;
+    width: 50%;
+}
+
+.image-comparison .slider {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.image-comparison .slider-line {
+    position: absolute;
+    height: 100%;
+    width: 4px;
+    background: #fff;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.image-comparison .slider-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 60px;
+    height: 60px;
+    color: #fff;
+    transform: translate(-50%, -50%) rotateZ(90deg);
 }

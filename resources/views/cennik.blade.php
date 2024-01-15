@@ -22,8 +22,34 @@
                         <p class="text-center"><strong>Cena po obhliadke dohodou. Preferujeme zaslanie fotografie.</strong></p>
                     </div>
                 </div>
-                <div class="col-md-5">
-                    <img src="{{ asset('image/brusenie_hrob.png') }}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+                <div class="col-lg-5">
+                    <div class="image-comparison">
+                        <div class="images-container">
+                            <img class="before-image" src="{{ asset('image/brusenie_before.jpg') }}" alt="" />
+                            <img class="after-image" src="{{ asset('image/brusenie_after.png') }}" alt="" />
+
+                            <div class="slider-line"></div>
+                            <div class="slider-icon">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                                    />
+                                </svg>
+                            </div>
+
+                            <input type="range" class="slider" min="0" max="100" />
+                        </div>
+                    </div>
+{{--                        <img src="{{ asset('image/brusenie_after.png') }}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">--}}
                 </div>
             </div>
 
@@ -39,7 +65,32 @@
                     </ul>
                 </div>
                 <div class="col-md-5 order-md-1">
-                    <img src="{{ asset('image/nater_hrob.png') }}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">
+                    <div class="image-comparison">
+                        <div class="images-container">
+                            <img class="before-image" src="{{ asset('image/nater_hrob_before.jpg') }}" alt="" />
+                            <img class="after-image" src="{{ asset('image/nater_hrob_after.jpg') }}" alt="" />
+
+                            <div class="slider-line"></div>
+                            <div class="slider-icon">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="w-6 h-6"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                                    />
+                                </svg>
+                            </div>
+
+                            <input type="range" class="slider" min="0" max="100" />
+                        </div>
+                    </div>
                 </div>
             </div>
 

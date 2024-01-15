@@ -39,4 +39,6 @@
         </main>
         @include('layouts.footer')
     </body>
+    <script src="{{ asset('js/image.js') }}"></script>
+
 </html>
