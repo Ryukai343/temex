@@ -28,9 +28,13 @@
 
             <hr class="featurette-divider">
 
-            <!-- /END THE FEATURETTES -->
             <p class="text-center"><strong>Všetky ceny sú uvedené s DPH.</strong></p>
             <h2 class="text-center pb-5 mb-0">Pri kompletnom prebrúsení hrobu obnova písma a doprava ZADARMO !!!</h2>
+
+            <div id="fb-root px-4">
+                <div class="fb-comments" data-href="https://temex.com/" data-width="100%" data-numposts="5"></div>
+            </div>
         </div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/sk_SK/sdk.js#xfbml=1&version=v18.0&appId=111581840253740" nonce="yGDdQzCi"></script>
     </article>
 @endsection

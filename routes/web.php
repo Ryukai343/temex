@@ -38,6 +38,8 @@ Route::get('/onas', function () {
 // Items
 Route::get('/items/{type?}', [ItemController::class, 'index'])->name('items.index');
 Route::get('/items/detail/{item}', [ItemController::class, 'show'])->name('items.show');
+Route::get('/product_search', [ItemController::class, 'search'])->name('items.search');
+Route::get('/type/{type_id}', [ItemController::class, 'getByType'])->name('items.getByType');
 
 // Cart
 Route::post('/cart/add/{item}', [CartController::class, 'item_add'])->name('cart.item_add');
@@ -46,9 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/addQuantity/{id}', [CartController::class, 'item_quantity_add'])->name('cart.item_quantity_add');
     Route::post('/cart/subQuantity/{id}', [CartController::class, 'item_quantity_sub'])->name('cart.item_quantity_sub');
 });
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
 
 //authorization
 Route::middleware('auth')->group(function () {

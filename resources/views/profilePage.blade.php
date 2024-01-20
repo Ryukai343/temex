@@ -18,8 +18,7 @@
         <div class="row">
             <div class="col-md-5 ">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    //TODO: upraviť obrázok
-                    <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                    <img class="rounded-circle mt-5 profile" src="{{ asset('image/profile_picture.webp') }}" alt="Profilový obrázok">
                     <span class="text-black-50 mt-4">{{$user->email}}</span>
                 </div>
             </div>
@@ -32,25 +31,25 @@
                         @csrf
                         <div class="row mt-2">
                             <div class="col-md-6">
-                                <label class="labels">Name</label>
+                                <label class="labels" for="firstName">Name</label>
                                 <input type="text" class="form-control" placeholder="meno" id="firstName" name="firstName" value="{{$user->name}}">
                                 <x-input-error :messages="$errors->get('firstName')" class="mt-2" />
                             </div>
 
                             <div class="col-md-6">
-                                <label class="labels">Surname</label>
+                                <label class="labels" for="lastName">Surname</label>
                                 <input type="text" class="form-control" id="lastName" name="lastName" value="{{$user->surname}}" placeholder="priezvisko">
                                 <x-input-error :messages="$errors->get('lastName')" class="mt-2" />
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <label class="labels">Tel. číslo</label>
+                                <label class="labels" for="phone">Tel. číslo</label>
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="tel.číslo" value="{{$user->phone}}">
                                 <x-input-error :messages="$errors->get('phone')" class="mt-2" />
                             </div>
                             <div class="col-md-12">
-                                <label class="labels">Email</label>
+                                <label class="labels" for="email">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="email" value="{{$user->email}}">
                                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
                             </div>
@@ -58,12 +57,12 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-6">
-                                <label class="labels">Mesto</label>
+                                <label class="labels" for="city">Mesto</label>
                                 <input type="text" class="form-control" id="city" name="city"  placeholder="Mesto" value="{{$user->city}}">
                                 <x-input-error :messages="$errors->get('city')" class="mt-2" />
                             </div>
                             <div class="col-md-6">
-                                <label class="labels">Psč</label>
+                                <label class="labels" for="psc">Psč</label>
                                 <input type="text" class="form-control" id="psc" name="psc"  value="{{$user->psc}}" placeholder="Psč">
                                 <x-input-error :messages="$errors->get('psc')" class="mt-2" />
                             </div>
@@ -78,7 +77,7 @@
                         @method('PUT')
                     <div class="row mt-3">
                         <div class="col-md-12">
-                            <label class="labels">Nove heslo</label>
+                            <label class="labels" for="password">Nove heslo</label>
                             <input type="password" class="form-control" id="password" name="password"  placeholder="Nové heslo">
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>

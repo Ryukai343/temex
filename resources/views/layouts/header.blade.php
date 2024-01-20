@@ -2,13 +2,13 @@
     <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('image/Title01.jpg') }}" class="title">
+                <img src="{{ asset('image/Title01.jpg') }}" class="title" alt="Title1">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('image/Title02.jpg') }}" class="title">
+                <img src="{{ asset('image/Title02.jpg') }}" class="title" alt="Title2">
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('image/Title03.jpg') }}" class="title">
+                <img src="{{ asset('image/Title03.jpg') }}" class="title" alt="Title3">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">

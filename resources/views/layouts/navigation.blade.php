@@ -67,3 +67,4 @@
         </div>
     </div>
 </nav>
+<script src="{{asset('js/ajax_search.js')}}" ></script>

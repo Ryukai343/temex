@@ -7,7 +7,7 @@
         <div class="container marketing pt-5">
             <div class="row featurette">
                 <div class="col-md-7">
-                    <h2 class="featurette-heading fw-normal lh-1">Brúsenie<img src="{{ asset('image/sander.png') }}" class="sander_icon"></h2>
+                    <h2 class="featurette-heading fw-normal lh-1">Brúsenie<img src="{{ asset('image/sander.png') }}" class="sander_icon" alt="brúska"></h2>
                     <div class="lead">
                         <ul class="list text-left">
                             <li class="text-left">Brúsenie 1-hrob bez platne</li>
@@ -46,7 +46,9 @@
                                 </svg>
                             </div>
 
-                            <input type="range" class="slider" min="0" max="100" />
+                            <label>
+                                <input type="range" class="slider" min="0" max="100" />
+                            </label>
                         </div>
                     </div>
 {{--                        <img src="{{ asset('image/brusenie_after.png') }}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto">--}}
@@ -88,7 +90,9 @@
                                 </svg>
                             </div>
 
-                            <input type="range" class="slider" min="0" max="100" />
+                            <label>
+                                <input type="range" class="slider" min="0" max="100" />
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -121,4 +125,5 @@
             <h2 class="text-center pb-5 mb-0">Pri kompletnom prebrúsení hrobu obnova písma a doprava ZADARMO !!!</h2>
         </div>
     </article>
+    <script src="{{ asset('js/image.js') }}"></script>
 @endsection

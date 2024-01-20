@@ -15,7 +15,6 @@ function mouse_position(event) {
     const distance = document.getElementById("DIS").textContent = calculateDistance(mouseX, mouseY, buttonX, buttonY);
     const name = document.getElementById("name")
     const description = document.getElementById("description")
-    const picture = document.getElementById("picture")
     const price = document.getElementById("price")
 
     if ( name.value === '' || description.value === '' || price.value === '') {
@@ -62,8 +61,6 @@ function calculatePerspectiveFactor(x, y) {
 
     const distanceFromCenter = Math.sqrt((x - screenWidth / 2) ** 2 + (y - screenHeight / 2) ** 2);
 
-    const perspectiveFactor = 1 - distanceFromCenter / (Math.sqrt(screenWidth ** 2 + screenHeight ** 2) / 2);
-
-    return perspectiveFactor;
+    return 1 - distanceFromCenter / (Math.sqrt(screenWidth ** 2 + screenHeight ** 2) / 2);
 }
 
